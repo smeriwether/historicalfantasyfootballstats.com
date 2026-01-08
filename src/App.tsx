@@ -64,6 +64,17 @@ function App() {
               Open source on GitHub
             </a>
           </p>
+          <p className="mt-2 text-gray-400">
+            Data from{' '}
+            <a
+              href="https://www.kaggle.com/datasets/heefjones/nfl-fantasy-data-1970-2024"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-500 hover:text-gray-700 underline"
+            >
+              Heath Jones on Kaggle
+            </a>
+          </p>
           <p className="mt-2 text-gray-400">Go Texans!</p>
         </div>
       </footer>
