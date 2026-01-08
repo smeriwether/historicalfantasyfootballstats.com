@@ -6,9 +6,10 @@ export const DEFAULT_SCORING: ScoringConfig = {
   interception: -2,
   rushingYardsPerPoint: 10,
   rushingTD: 6,
+  rushingCarry: 0, // Points per carry (0 = standard)
   receivingYardsPerPoint: 10,
   receivingTD: 6,
-  reception: 0, // Standard scoring (0 = standard, 0.5 = half-PPR, 1 = full PPR)
+  reception: 1, // PPR scoring (0 = standard, 0.5 = half-PPR, 1 = full PPR)
   fumbleLost: -2,
 };
 

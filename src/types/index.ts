@@ -55,6 +55,7 @@ export interface ScoringConfig {
   interception: number;
   rushingYardsPerPoint: number;
   rushingTD: number;
+  rushingCarry: number;
   receivingYardsPerPoint: number;
   receivingTD: number;
   reception: number;

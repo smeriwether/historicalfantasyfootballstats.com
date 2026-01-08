@@ -62,6 +62,19 @@ describe('calculateFantasyPoints', () => {
       const points = calculateFantasyPoints(player, DEFAULT_SCORING);
       expect(points).toBe(12); // 2 * 6 = 12
     });
+
+    it('calculates rushing carries with default scoring (0 points per carry)', () => {
+      const player = createEmptyPlayer({ rushAtt: 20 });
+      const points = calculateFantasyPoints(player, DEFAULT_SCORING);
+      expect(points).toBe(0); // 20 * 0 = 0 (default)
+    });
+
+    it('calculates rushing carries with points per carry', () => {
+      const ppcScoring: ScoringConfig = { ...DEFAULT_SCORING, rushingCarry: 0.1 };
+      const player = createEmptyPlayer({ rushAtt: 20 });
+      const points = calculateFantasyPoints(player, ppcScoring);
+      expect(points).toBe(2); // 20 * 0.1 = 2
+    });
   });
 
   describe('receiving stats', () => {
@@ -77,17 +90,17 @@ describe('calculateFantasyPoints', () => {
       expect(points).toBe(6); // 1 * 6 = 6
     });
 
-    it('calculates receptions with standard scoring (default: 0 points)', () => {
+    it('calculates receptions with PPR scoring (default: 1 point per reception)', () => {
       const player = createEmptyPlayer({ rec: 10 });
       const points = calculateFantasyPoints(player, DEFAULT_SCORING);
-      expect(points).toBe(0); // 10 * 0 = 0 (standard scoring)
+      expect(points).toBe(10); // 10 * 1 = 10 (PPR scoring)
     });
 
-    it('calculates receptions with PPR scoring (1 point per reception)', () => {
-      const pprScoring: ScoringConfig = { ...DEFAULT_SCORING, reception: 1 };
+    it('calculates receptions with standard scoring (0 points per reception)', () => {
+      const standardScoring: ScoringConfig = { ...DEFAULT_SCORING, reception: 0 };
       const player = createEmptyPlayer({ rec: 10 });
-      const points = calculateFantasyPoints(player, pprScoring);
-      expect(points).toBe(10); // 10 * 1 = 10
+      const points = calculateFantasyPoints(player, standardScoring);
+      expect(points).toBe(0); // 10 * 0 = 0
     });
 
     it('calculates receptions with half-PPR scoring (0.5 points per reception)', () => {
@@ -151,7 +164,7 @@ describe('calculateFantasyPoints', () => {
       expect(points).toBe(325);
     });
 
-    it('calculates a complete RB season correctly', () => {
+    it('calculates a complete RB season correctly with PPR', () => {
       const player = createEmptyPlayer({
         position: 'RB',
         rushYds: 1200,
@@ -165,12 +178,12 @@ describe('calculateFantasyPoints', () => {
       const points = calculateFantasyPoints(player, DEFAULT_SCORING);
       // 1200/10 = 120 (rush yds)
       // 10*6 = 60 (rush TD)
-      // 50*0 = 0 (receptions - standard)
+      // 50*1 = 50 (receptions - PPR default)
       // 400/10 = 40 (rec yds)
       // 3*6 = 18 (rec TD)
       // 2*-2 = -4 (fumbles)
-      // Total: 120 + 60 + 0 + 40 + 18 - 4 = 234
-      expect(points).toBe(234);
+      // Total: 120 + 60 + 50 + 40 + 18 - 4 = 284
+      expect(points).toBe(284);
     });
   });
 

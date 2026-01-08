@@ -111,6 +111,13 @@ export function ScoringModal() {
                 onChange={(v) => updateConfig('rushingTD', v)}
                 suffix="pts"
               />
+              <ScoringInput
+                label="Points per Carry"
+                value={localConfig.rushingCarry}
+                onChange={(v) => updateConfig('rushingCarry', v)}
+                step={0.1}
+                suffix="pts (PPC)"
+              />
             </div>
           </div>
 

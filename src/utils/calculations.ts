@@ -18,6 +18,7 @@ export function calculateFantasyPoints(
   // Rushing
   points += player.rushYds / config.rushingYardsPerPoint;
   points += player.rushTD * config.rushingTD;
+  points += player.rushAtt * config.rushingCarry;
 
   // Receiving
   points += player.recYds / config.receivingYardsPerPoint;
