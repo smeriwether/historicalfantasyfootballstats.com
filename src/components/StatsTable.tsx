@@ -86,26 +86,30 @@ export function StatsTable() {
         <thead className="bg-gray-50">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  onClick={header.column.getToggleSortingHandler()}
-                  className="px-3 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider
-                             cursor-pointer hover:bg-gray-100 select-none whitespace-nowrap"
-                  style={{ width: header.column.getSize() }}
-                >
-                  <div className="flex items-center gap-1">
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-                    {{
-                      asc: ' ↑',
-                      desc: ' ↓',
-                    }[header.column.getIsSorted() as string] ?? null}
-                  </div>
-                </th>
-              ))}
+              {headerGroup.headers.map((header) => {
+                const isPlayerColumn = header.column.id === 'player';
+                return (
+                  <th
+                    key={header.id}
+                    onClick={header.column.getToggleSortingHandler()}
+                    className={`px-3 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider
+                               cursor-pointer hover:bg-gray-100 select-none whitespace-nowrap
+                               ${isPlayerColumn ? 'sticky left-0 z-10 bg-gray-50 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]' : ''}`}
+                    style={{ width: header.column.getSize() }}
+                  >
+                    <div className="flex items-center gap-1">
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                      {{
+                        asc: ' ↑',
+                        desc: ' ↓',
+                      }[header.column.getIsSorted() as string] ?? null}
+                    </div>
+                  </th>
+                );
+              })}
             </tr>
           ))}
         </thead>
@@ -115,14 +119,19 @@ export function StatsTable() {
               key={row.id}
               className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
             >
-              {row.getVisibleCells().map((cell) => (
-                <td
-                  key={cell.id}
-                  className="px-3 py-2 text-sm text-gray-900 whitespace-nowrap"
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
+              {row.getVisibleCells().map((cell) => {
+                const isPlayerColumn = cell.column.id === 'player';
+                const rowBg = index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+                return (
+                  <td
+                    key={cell.id}
+                    className={`px-3 py-2 text-sm text-gray-900 whitespace-nowrap
+                               ${isPlayerColumn ? `sticky left-0 z-10 ${rowBg} shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]` : ''}`}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                );
+              })}
             </tr>
           ))}
         </tbody>
