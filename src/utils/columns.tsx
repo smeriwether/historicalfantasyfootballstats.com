@@ -1,6 +1,16 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import type { PlayerSeasonWithPoints, PositionFilter } from '../types';
 
+// Rank column - displays the row's position in the current sorted order
+const rankColumn: ColumnDef<PlayerSeasonWithPoints> = {
+  id: 'rank',
+  header: '#',
+  size: 40,
+  cell: ({ row }) => (
+    <span className="text-gray-500">{row.index + 1}</span>
+  ),
+};
+
 // Base columns shown for all positions
 const baseColumns: ColumnDef<PlayerSeasonWithPoints>[] = [
   {
@@ -69,6 +79,7 @@ export function getColumnsForPosition(
     case 'QB':
       // QB: passing first, then rushing, then receiving at the end
       return [
+        rankColumn,
         ...baseColumns,
         ...passingColumns,
         ...rushingColumns,
@@ -78,6 +89,7 @@ export function getColumnsForPosition(
     case 'RB':
       // RB: rushing first, then receiving, then passing at the end
       return [
+        rankColumn,
         ...baseColumns,
         ...rushingColumns,
         ...receivingColumns,
@@ -88,6 +100,7 @@ export function getColumnsForPosition(
     case 'TE':
       // WR/TE: receiving first, then rushing, then passing at the end
       return [
+        rankColumn,
         ...baseColumns,
         ...receivingColumns,
         ...rushingColumns,
@@ -97,6 +110,7 @@ export function getColumnsForPosition(
     case 'All':
     default:
       return [
+        rankColumn,
         ...baseColumns,
         ...passingColumns,
         ...rushingColumns,

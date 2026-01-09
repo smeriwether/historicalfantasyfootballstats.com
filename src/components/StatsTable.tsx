@@ -88,7 +88,7 @@ export function StatsTable() {
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 const isPlayerColumn = header.column.id === 'player';
-                const isTextColumn = header.column.id === 'player' || header.column.id === 'team' || header.column.id === 'year';
+                const isTextColumn = header.column.id === 'rank' || header.column.id === 'player' || header.column.id === 'team' || header.column.id === 'year';
                 return (
                   <th
                     key={header.id}
@@ -123,7 +123,7 @@ export function StatsTable() {
             >
               {row.getVisibleCells().map((cell) => {
                 const isPlayerColumn = cell.column.id === 'player';
-                const isTextColumn = cell.column.id === 'player' || cell.column.id === 'team' || cell.column.id === 'year';
+                const isTextColumn = cell.column.id === 'rank' || cell.column.id === 'player' || cell.column.id === 'team' || cell.column.id === 'year';
                 const rowBg = index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
                 return (
                   <td

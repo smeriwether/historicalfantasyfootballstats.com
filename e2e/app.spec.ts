@@ -1,6 +1,31 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Historical Fantasy Football Stats', () => {
+  test('rank column displays row positions correctly', async ({ page }) => {
+    await page.goto('/');
+
+    // Wait for data to load
+    await expect(page.getByText('Loading data...')).toBeHidden({ timeout: 10000 });
+
+    // Verify rank column header exists
+    await expect(page.getByRole('columnheader', { name: '#' })).toBeVisible();
+
+    // Get the first few rows and verify they have correct rank numbers
+    const rows = page.locator('tbody tr');
+
+    // First row should show rank 1
+    const firstRowRank = rows.first().locator('td').first();
+    await expect(firstRowRank).toHaveText('1');
+
+    // Second row should show rank 2
+    const secondRowRank = rows.nth(1).locator('td').first();
+    await expect(secondRowRank).toHaveText('2');
+
+    // Third row should show rank 3
+    const thirdRowRank = rows.nth(2).locator('td').first();
+    await expect(thirdRowRank).toHaveText('3');
+  });
+
   test('scoring modal saves and persists changes', async ({ page }) => {
     await page.goto('/');
 
