@@ -38,16 +38,22 @@ export function useFantasyData() {
     filtered = filterByYearRange(filtered, yearFilter);
 
     // Calculate fantasy points for each player
-    const withPoints: PlayerSeasonWithPoints[] = filtered.map((player) => ({
+    const withPoints = filtered.map((player) => ({
       ...player,
       fantasyPoints: calculateFantasyPoints(player, scoringConfig),
+      rank: 0, // Placeholder, will be set after sorting
     }));
 
     // Sort by fantasy points descending
     withPoints.sort((a, b) => b.fantasyPoints - a.fantasyPoints);
 
-    // Limit to top N results
-    return withPoints.slice(0, MAX_RESULTS);
+    // Limit to top N results and assign ranks
+    const topResults = withPoints.slice(0, MAX_RESULTS);
+    topResults.forEach((player, index) => {
+      player.rank = index + 1;
+    });
+
+    return topResults;
   }, [rawData, loading, positionFilter, yearFilter, scoringConfig]);
 
   return { data, loading, error };

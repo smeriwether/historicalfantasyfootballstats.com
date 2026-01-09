@@ -47,6 +47,7 @@ export interface PlayerSeason {
 
 export interface PlayerSeasonWithPoints extends PlayerSeason {
   fantasyPoints: number;
+  rank: number;
 }
 
 export interface ScoringConfig {
