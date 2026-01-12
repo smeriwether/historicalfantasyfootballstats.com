@@ -26,6 +26,31 @@ test.describe('Historical Fantasy Football Stats', () => {
     await expect(thirdRowRank).toHaveText('3');
   });
 
+  test('rank column is sortable', async ({ page }) => {
+    await page.goto('/');
+
+    // Wait for data to load
+    await expect(page.getByText('Loading data...')).toBeHidden({ timeout: 10000 });
+
+    const rows = page.locator('tbody tr');
+    const rankHeader = page.getByRole('columnheader', { name: '#' });
+
+    // Initially sorted by fantasy points, so rank 1 is first
+    await expect(rows.first().locator('td').first()).toHaveText('1');
+
+    // Click rank header - first click sorts descending (numeric columns default to desc)
+    await rankHeader.click();
+    await expect(rankHeader).toContainText('↓');
+    // First row should now show the highest rank number (last place)
+    const firstRowRankDesc = await rows.first().locator('td').first().textContent();
+    expect(Number(firstRowRankDesc)).toBeGreaterThan(1);
+
+    // Click again to sort ascending (1, 2, 3...)
+    await rankHeader.click();
+    await expect(rankHeader).toContainText('↑');
+    await expect(rows.first().locator('td').first()).toHaveText('1');
+  });
+
   test('scoring modal saves and persists changes', async ({ page }) => {
     await page.goto('/');
 

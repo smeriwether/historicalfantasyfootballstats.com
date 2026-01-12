@@ -1,13 +1,13 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import type { PlayerSeasonWithPoints, PositionFilter } from '../types';
 
-// Rank column - displays the row's position in the current sorted order
+// Rank column - displays the player's fantasy points rank (sortable)
 const rankColumn: ColumnDef<PlayerSeasonWithPoints> = {
-  id: 'rank',
+  accessorKey: 'rank',
   header: '#',
   size: 40,
-  cell: ({ row }) => (
-    <span className="text-gray-500">{row.index + 1}</span>
+  cell: ({ getValue }) => (
+    <span className="text-gray-500">{getValue<number>()}</span>
   ),
 };
 
